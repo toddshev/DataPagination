@@ -53,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
          if (fullName.includes(userInput)) {
             matchingStudents.push(student);
          } else if (userInput === '') { 
+            searchInput.value = ''
             searchInput.placeholder = 'Search by name...';
             showPage(data, 1);    
             addPagination(data);
@@ -61,9 +62,15 @@ document.addEventListener('DOMContentLoaded', () => {
       if (matchingStudents.length === 0) {
          searchInput.value = '';   
          searchInput.placeholder = 'No results found.';
+         showPage([],1);
+         addPagination([]);
+
       } else { 
          showPage(matchingStudents, 1); // Show first page of matching students
          addPagination(matchingStudents); // Update pagination for matching students
+      }
+      if (userInput === '') {
+         searchInput.placeholder = 'Search by name...';
       }
    });
 
@@ -97,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const endIndex = page * 9;
       const studentList = document.querySelector('.student-list');
       studentList.innerHTML = ''; // Clear previous content
-      console.log(startIndex, endIndex);
+
       for (let i = startIndex; i >=startIndex && i < endIndex && i < list.length; i++) {
          const student = list[i];
          const studentListItem = document.createElement('li');
@@ -126,7 +133,6 @@ document.addEventListener('DOMContentLoaded', () => {
    function addPagination(list) {
       //Must round up to account for data on the last page
       const numOfPages = Math.ceil(list.length / 9);
-      console.log(`Number of pages: ${numOfPages}`);
       const linkList = document.querySelector('.link-list');
 
       linkList.innerHTML = ''; 
@@ -153,7 +159,6 @@ document.addEventListener('DOMContentLoaded', () => {
          e.target.classList.add('active');
          showPage(data, e.target.textContent);
       }
-    //searchInput.value = '';  //clear search input when page is changed
    });
 
    // Call functions - these fire when the page loads
